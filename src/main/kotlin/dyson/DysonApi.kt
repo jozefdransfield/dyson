@@ -5,10 +5,14 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule
 import okhttp3.*
 
 
-class DysonApi(email: String, password: String, country: String) {
+class DysonApi(email: String, password: String, country: String, private val client: OkHttpClient, private val mapper: ObjectMapper) {
 
-    private val client: OkHttpClient = OkHttpClient()
-    private val mapper = ObjectMapper().registerModule(KotlinModule())
+    companion object {
+        fun using(email: String, password: String, country: String) : DysonApi {
+            return DysonApi(email, password, country, OkHttpClient(), ObjectMapper().registerModule(KotlinModule()))
+        }
+    }
+
     private val credentials: String
 
     init {
