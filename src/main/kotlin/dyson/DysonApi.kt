@@ -17,9 +17,12 @@ class DysonApi(email: String, password: String, country: String) {
         val request = Request.Builder().url("https://api.cp.dyson.com/v1/userregistration/authenticate?country=$country").post(body).build()
         val response = client.newCall(request).execute()
 
-        val json = mapper.readTree(response.body()?.string())
-
-        credentials = Credentials.basic(json["Account"].asText(), json["Password"].asText())
+        if (response.code() == 200) {
+            val json = mapper.readTree(response.body()?.string())
+            credentials = Credentials.basic(json["Account"].asText(), json["Password"].asText())
+        } else {
+            throw IllegalStateException("Failed to authenticate with Dyson")
+        }
     }
 
     fun devices(): List<DeviceMetaData> {
@@ -31,9 +34,6 @@ class DysonApi(email: String, password: String, country: String) {
 
         val response = client.newCall(request).execute()
 
-        //TODO handle failure responses
-        val message = response.body()?.string()
-
-        return mapper.readTree(message!!).map { DeviceMetaData.fromJson(it) }
+        return mapper.readTree(response.body()?.string()).map { DeviceMetaData.fromJson(it) }
     }
 }
