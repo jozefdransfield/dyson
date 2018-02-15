@@ -33,6 +33,7 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.9.1'
     compile 'org.fusesource.mqtt-client:mqtt-client:1.12'
     compile 'org.jmdns:jmdns:3.5.3'
+    testCompile 'org.awaitility:awaitility:3.0.0'
     testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
     testCompile "com.nhaarman:mockito-kotlin:1.5.0"
     testCompile 'org.jetbrains.spek:spek-api:1.1.5'
