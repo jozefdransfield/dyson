@@ -1,4 +1,4 @@
-package dyson.devices
+package dyson.device
 
 import com.fasterxml.jackson.databind.JsonNode
 import dyson.Device

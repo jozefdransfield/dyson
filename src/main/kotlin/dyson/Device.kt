@@ -13,7 +13,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.function.Consumer
 
-class Device(hostAddress: String, port: Int, password: String, metaData: DeviceMetaData, mqtt: MQTT) : Closeable {
+open class Device(hostAddress: String, port: Int, password: String, metaData: DeviceMetaData, mqtt: MQTT) : Closeable {
 
     private val connection: BlockingConnection
     private val executor: ExecutorService = Executors.newFixedThreadPool(1)
