@@ -2,7 +2,7 @@ package dyson.devices
 
 import com.fasterxml.jackson.databind.JsonNode
 import dyson.Device
-import dyson.ToggleSwitch
+import dyson.model.ToggleSwitch
 import java.util.function.Consumer
 
 class DysonAirPurifier(private val device: Device) {

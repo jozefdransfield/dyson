@@ -1,5 +1,6 @@
 package dyson
 
+import dyson.model.DeviceMetaData
 import java.net.InetAddress
 import java.util.function.Consumer
 import javax.jmdns.JmDNS

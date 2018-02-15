@@ -2,16 +2,13 @@ package dyson
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
+import dyson.model.DeviceMetaData
 import okhttp3.*
 
 
 class DysonApi(email: String, password: String, country: String, private val client: OkHttpClient, private val mapper: ObjectMapper) {
 
-    companion object {
-        fun using(email: String, password: String, country: String) : DysonApi {
-            return DysonApi(email, password, country, OkHttpClient(), ObjectMapper().registerModule(KotlinModule()))
-        }
-    }
+    constructor(email: String, password: String, country: String) : this(email, password, country, OkHttpClient(), ObjectMapper().registerModule(KotlinModule()))
 
     private val credentials: String
 

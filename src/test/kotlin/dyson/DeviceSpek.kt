@@ -2,6 +2,7 @@ package dyson
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.nhaarman.mockito_kotlin.*
+import dyson.model.DeviceMetaData
 import org.awaitility.Awaitility.await
 import org.fusesource.mqtt.client.BlockingConnection
 import org.fusesource.mqtt.client.MQTT
@@ -12,12 +13,8 @@ import org.hamcrest.CoreMatchers.nullValue
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
-import java.util.*
-import java.util.concurrent.Callable
 import java.util.concurrent.TimeUnit
 import java.util.function.Consumer
-import java.util.function.Supplier
-import kotlin.concurrent.timerTask
 
 class DeviceSpek : Spek({
     describe("a device") {

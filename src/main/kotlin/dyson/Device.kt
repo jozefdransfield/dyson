@@ -3,6 +3,7 @@ package dyson
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
+import dyson.model.DeviceMetaData
 import org.fusesource.mqtt.client.BlockingConnection
 import org.fusesource.mqtt.client.MQTT
 import org.fusesource.mqtt.client.QoS

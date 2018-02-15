@@ -1,4 +1,4 @@
-package dyson
+package dyson.model
 
 import com.fasterxml.jackson.databind.JsonNode
 
