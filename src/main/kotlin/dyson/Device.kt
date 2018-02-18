@@ -13,7 +13,12 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.function.Consumer
 
-open class Device(hostAddress: String, port: Int, password: String, metaData: DeviceMetaData, mqtt: MQTT) : Closeable {
+interface Device : Closeable {
+    fun sendCommand(payload: String)
+    fun receive(consumer: Consumer<JsonNode>)
+}
+
+open class MQTTDevice(hostAddress: String, port: Int, password: String, metaData: DeviceMetaData, mqtt: MQTT) : Device {
 
     private val connection: BlockingConnection
     private val executor: ExecutorService = Executors.newFixedThreadPool(1)
@@ -49,11 +54,11 @@ open class Device(hostAddress: String, port: Int, password: String, metaData: De
         })
     }
 
-    fun sendCommand(payload: String) {
+    override fun sendCommand(payload: String) {
         connection.publish("$baseTopic/command", payload.toByteArray(), QoS.AT_LEAST_ONCE, false)
     }
 
-    fun receive(consumer: Consumer<JsonNode>) {
+    override fun receive(consumer: Consumer<JsonNode>) {
         receivers.add(consumer)
     }
 

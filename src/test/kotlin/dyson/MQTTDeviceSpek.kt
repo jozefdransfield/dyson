@@ -32,19 +32,19 @@ class DeviceSpek : Spek({
         }
         describe("the constructor") {
             it("connects to mqtt") {
-                Device("host", 1, "password", DeviceMetaData(), mqtt).use {}
+                MQTTDevice("host", 1, "password", DeviceMetaData(), mqtt).use {}
             }
         }
         describe("an instance") {
             it("should send a command") {
-                Device("host", 1, "password", DeviceMetaData(productType = "productType", serial = "serial"), mqtt).use {
+                MQTTDevice("host", 1, "password", DeviceMetaData(productType = "productType", serial = "serial"), mqtt).use {
                     it.sendCommand("payload")
                 }
                 verify(connection).publish("productType/serial/command", "payload".toByteArray(), QoS.AT_LEAST_ONCE, false)
             }
 
             it("should receive a message") {
-                Device("host", 1, "password", DeviceMetaData(productType = "productType", serial = "serial"), mqtt).use {
+                MQTTDevice("host", 1, "password", DeviceMetaData(productType = "productType", serial = "serial"), mqtt).use {
                     var message : JsonNode? = null
                     it.receive(Consumer {
                         message = it
