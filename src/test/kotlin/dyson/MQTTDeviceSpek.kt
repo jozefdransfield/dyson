@@ -45,11 +45,11 @@ class DeviceSpek : Spek({
 
             it("should receive a message") {
                 MQTTDevice("host", 1, "password", DeviceMetaData(productType = "productType", serial = "serial"), mqtt).use {
-                    var message : JsonNode? = null
+                    var newMessage : JsonNode? = null
                     it.receive(Consumer {
-                        message = it
+                        newMessage = it
                     })
-                    await().atMost(1, TimeUnit.SECONDS).until({message}, not(nullValue()))
+                    await().atMost(1, TimeUnit.SECONDS).until({newMessage}, not(nullValue()))
                 }
             }
         }

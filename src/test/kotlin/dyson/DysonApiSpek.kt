@@ -43,7 +43,7 @@ class DysonApiSpek : Spek({
             it("should return the device list") {
                 // TODO Make this return some real json!
                 respondWith(client, ResponseBody.create(mediaType, "[]"), 200)
-                val devices = dysonApi.devices()
+                dysonApi.devices()
 
             }
         }
