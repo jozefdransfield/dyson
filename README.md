@@ -1,23 +1,28 @@
-***Example Responses***
+```kotlin
+System.setProperty("javax.net.ssl.trustStore", "cacerts.jks")
+    System.setProperty("javax.net.ssl.trustStorePassword", "changeit")
+//    System.setProperty("javax.net.debug", "all")
 
+    val dyson = DysonApi("<EMAIL>", "<PASSWORD>", "GB")
 
-**REQUEST-PRODUCT-ENVIRONMENT-CURRENT-SENSOR-DATA**
+    val devices = dyson.devices()
 
-`
-{"msg":"ENVIRONMENTAL-CURRENT-SENSOR-DATA","time":"2018-02-09T23:17:15.000Z","data":{"tact":"2944","hact":"0053","pact":"0001","vact":"0000","sltm":"OFF"}}
-`
-HACT --> Humidity
-VACT --> Volatile Compounds
-TACT --> Temperature
-PACT --> DUST
-sltm --> SLeep timer
+    println("*** Found Devices: ")
+    devices.forEach(Consumer {
+        println("Device: \t ${it.serial} \t ${it.name}")
+    })
 
-**REQUEST-CURRENT-STATE**
+    val serial = "<SERIAL NO>"
+    val deviceMetaData = devices.find { it.serial == serial }!!
 
-`
-{"msg":"CURRENT-STATE","time":"2018-02-09T23:29:58.000Z","mode-reason":"PUI","state-reason":"ENV","dial":"OFF","rssi":"-45","product-state":{"fmod":"AUTO","fnst":"OFF","fnsp":"AUTO","qtar":"0003","oson":"OFF","rhtm":"ON","filf":"4119","ercd":"NONE","nmod":"OFF","wacd":"NONE"},"scheduler":{"srsc":"f7ae","dstv":"0001","tzid":"0001"}}
-`
-
-fmod --> Fan Mode
-fnsp --> Fan Speed
-oson --> Fan Oscilation
+    DeviceDiscovery().use {
+        val (host, port) = it.watchFor(deviceMetaData).get(5, TimeUnit.SECONDS)
+        println("*** Resolved Device with ${serial} to $host:$port")
+        val device = MQTTDevice(host, port, DysonCredentials.decrypt(deviceMetaData.localCredentials), deviceMetaData)
+        DysonAirPurifier(device).use {
+            val toggleSwitch = ToggleSwitch.OFF
+            it.oscillate(toggleSwitch)
+            println("*** Setting oscillate to $toggleSwitch")
+        }
+    }
+```
