@@ -11,4 +11,3 @@ keytool -import -v -trustcacerts -keystore cacerts.jks -alias dysonca -file api.
 
 rm api.cp.dyson.com.pem
 rm api.cp.dyson.com.der
-mv cacerts.jks src/main/resources/.

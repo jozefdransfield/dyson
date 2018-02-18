@@ -28,6 +28,8 @@ junitPlatform {
 }
 
 dependencies {
+    compile 'org.slf4j:slf4j-api:1.7.25'
+    compile 'org.slf4j:slf4j-nop:1.7.25'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.2"
     compile 'com.squareup.okhttp3:okhttp:3.9.1'

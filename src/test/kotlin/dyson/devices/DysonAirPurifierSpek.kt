@@ -1,8 +1,7 @@
-package dyson.device
+package dyson.devices
 
 import com.nhaarman.mockito_kotlin.*
 import dyson.Device
-import org.hamcrest.Matchers
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it

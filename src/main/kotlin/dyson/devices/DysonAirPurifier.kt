@@ -1,11 +1,12 @@
-package dyson.device
+package dyson.devices
 
 import com.fasterxml.jackson.databind.JsonNode
 import dyson.Device
 import dyson.model.ToggleSwitch
+import java.io.Closeable
 import java.util.function.Consumer
 
-class DysonAirPurifier(private val device: Device) {
+class DysonAirPurifier(private val device: Device) : Closeable {
 
     var sensorData: SensorData? = null
     var state: DeviceState = DeviceState(FanMode.AUTO, FanSpeed.AUTO, ToggleSwitch.OFF, "0", ToggleSwitch.OFF)
@@ -57,7 +58,7 @@ class DysonAirPurifier(private val device: Device) {
         device.sendCommand(payload)
     }
 
-    fun close() {
+    override fun close() {
         device.close()
     }
 
