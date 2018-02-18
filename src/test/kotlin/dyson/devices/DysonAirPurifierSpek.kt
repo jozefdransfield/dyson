@@ -28,6 +28,9 @@ class DysonAirPurifierSpek : Spek({
                     dysonAirPurifier.fanSpeedAndMode(FanSpeed.AUTO, FanMode.AUTO)
                     verify(device, atLeastOnce()).sendCommand(argThat { contains("\"fmod\":\"AUTO\"") })
                 }
+                it ("can return the current sensor data") {
+                    assert(dysonAirPurifier.sensorData != null)
+                }
             }
         }
 

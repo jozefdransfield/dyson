@@ -9,40 +9,39 @@ import javax.jmdns.JmDNS
 import javax.jmdns.ServiceEvent
 import javax.jmdns.ServiceListener
 
-class DeviceDiscovery(val jmdns: JmDNS) : Closeable {
+class DeviceDiscovery(private val jmdns: JmDNS) : Closeable {
 
     constructor() : this(JmDNS.create(InetAddress.getLocalHost()))
 
     private val futures: MutableMap<String, CompletableFuture<Pair<String, Int>>> = mutableMapOf()
 
     init {
-        jmdns.addServiceListener("_dyson_mqtt._tcp.local.", object : ServiceListener {
-            override fun serviceAdded(event: ServiceEvent?) {
-
-            }
-
-            override fun serviceRemoved(event: ServiceEvent?) {
-            }
-
-            override fun serviceResolved(event: ServiceEvent?) {
-                val serviceName = event!!.info.name
-
-                futures.entries.find { serviceName.endsWith(it.key) }?.let {
-                    val hostAddresses = event.info.hostAddresses[0]
-                    val port = event.info.port
-                    it.value.complete(Pair(hostAddresses, port))
-                }
-            }
-        })
+        jmdns.addServiceListener("_dyson_mqtt._tcp.local.", DysonServiceListener(futures))
     }
 
     fun watchFor(deviceMetaData: DeviceMetaData): CompletableFuture<Pair<String, Int>> {
         val future = CompletableFuture<Pair<String, Int>>()
-        futures.put(deviceMetaData.serial, future)
+        futures[deviceMetaData.serial] = future
         return future
     }
 
     override fun close() {
         jmdns.close()
+    }
+}
+
+class DysonServiceListener(private val futures: MutableMap<String, CompletableFuture<Pair<String, Int>>>) : ServiceListener {
+    override fun serviceAdded(event: ServiceEvent?) {}
+
+    override fun serviceRemoved(event: ServiceEvent?) {}
+
+    override fun serviceResolved(event: ServiceEvent?) {
+        val serviceName = event!!.info.name
+
+        futures.entries.find { serviceName.endsWith(it.key) }?.let {
+            val hostAddresses = event.info.hostAddresses[0]
+            val port = event.info.port
+            it.value.complete(Pair(hostAddresses, port))
+        }
     }
 }
