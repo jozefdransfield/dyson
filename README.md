@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/jozefdransfield/dyson.svg?style=svg)](https://circleci.com/gh/jozefdransfield/dyson)
+
 ```kotlin
 System.setProperty("javax.net.ssl.trustStore", "cacerts.jks")
     System.setProperty("javax.net.ssl.trustStorePassword", "changeit")
